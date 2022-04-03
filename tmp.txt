@@ -1,0 +1,77 @@
+SELECT Sname
+FROM Student
+WHERE Sno IN (
+	SELECT Sno
+    FROM SC
+    GROUP BY Sno
+    HAVING AVG(Grade)>80
+);
+
+SELECT Student.Sname,Course.Cname,Second.Grade
+FROM Student,Course,(
+    SELECT SC.*,First.avgg
+    FROM SC,(
+        SELECT Cno,AVG(Grade) avgg
+        FROM SC
+        GROUP BY Cno
+    ) First
+    WHERE SC.Cno=First.Cno AND Grade>avgg
+) Second
+WHERE Student.Sno=Second.Sno AND Course.Cno=Second.Cno;
+
+SELECT Sname
+FROM Student,(
+    SELECT *
+    FROM SC
+    WHERE Cno IN ('1','2')
+    GROUP BY Sno
+    HAVING COUNT(Cno)=2
+) First
+WHERE Student.Sno=First.Sno;
+或者
+SELECT Sname
+FROM Student,(
+    SELECT Sno
+    FROM SC
+    WHERE Cno='1' AND Sno IN (
+        SELECT Sno
+        FROM SC
+        WHERE Cno='2'
+    )
+) First
+WHERE Student.Sno=First.Sno;
+
+SELECT Sname
+FROM Student,(
+    SELECT Sno
+    FROM SC
+    WHERE Cno='1' AND Sno NOT IN (
+        SELECT Sno
+        FROM SC
+        WHERE Cno='2'
+    )
+) First
+WHERE Student.Sno=First.Sno;
+
+SELECT Cno,COUNT(*)
+FROM SC
+WHERE Grade>80
+GROUP BY Cno;
+
+SELECT AVG(Grade)
+FROM SC
+WHERE Sno IN (
+    SELECT Sno
+    FROM Student
+    WHERE Sdept='CS'
+);
+
+SELECT Sname
+FROM Student,(
+    SELECT *
+    FROM SC
+    WHERE Cno IN ('1','2')
+    GROUP BY Sno
+    HAVING COUNT(Cno)=2
+) First
+WHERE Student.Sno=First.Sno;

@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+#define rep(i,a,b) for(int i=(a);i<=(b);i++)
+#define per(i,a,b) for(int i=(a);i>=(b);i--)
+
+using namespace std;
+
+typedef long long LL;
+
+const int INF=0x3f3f3f3f;
+const int maxn=1005;
+
+int a[maxn];
+
+int main(){
+    int m,n;
+    scanf("%d%d",&m,&n);
+    rep(i,1,n){
+        int x;
+        scanf("%d",&x);
+        a[x]++;
+    }
+    rep(i,1,m){
+        rep(j,1,a[i])printf("%d ",i);
+    }
+    return 0;
+}
